@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Отметки</title>
+</head>
+<body>
+	<div class="logo">
+		<h1>Отметки</h1>
+		<span>отметки за текущий период</span>
+		<span>по данным schools.by</span>
+	</div>
+	<div class="container">
+		<h2 class="subheader">Вход</h2>
+		<form method="post" action="">
+			{% csrf_token %}
+
+			{{ form.as_p }}
+
+			<div>
+				<button type="submit">Войти</button>
+			</div>
+		</form>
+
+		{% if options %}
+		<h2 class="subheader">Учащиеся</h2>
+		{% for id, name in options.items %}
+		<p class="children">
+			<a href="?id={{ id }}">{{ name }}</a>
+		</p>
+		{% endfor %}
+		{% endif %}
+
+		{% if marks %}
+		<h2 class="subheader">Отметки</h2>
+		<table class="marks">
+		<tr>
+			<th>Предмет</th>
+			<th>Отметки</th>
+			<th>Текущая</th>
+			<th>Итоговая</th>
+		</tr>
+		{% for title, value in marks.items %}
+		<tr>
+			<td class="title">{{ title }}</td>
+			{% for marks in value %}
+			<td class="mark"> 
+			{% for mark in marks %}
+				{{ mark }}
+			{% endfor %}
+			</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+		</table>
+		{% endif %}
+	</div>
+</body>
+</html>
